@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Flask</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            min-height: 600px;
+        }
+
+        .calculator-section {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .history-section {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 30px;
+            border-left: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+
+        .display {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            font-size: 2rem;
+            font-weight: 500;
+            color: #333;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            word-break: break-all;
+            overflow-wrap: break-word;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 15px;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-height: 60px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-number {
+            background: #fff;
+            color: #333;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-number:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+        }
+
+        .btn-operator {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-operator:hover {
+            background: #5a6fd8;
+        }
+
+        .btn-equals {
+            background: #28a745;
+            color: white;
+            grid-column: span 2;
+        }
+
+        .btn-equals:hover {
+            background: #218838;
+        }
+
+        .btn-clear {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-clear:hover {
+            background: #c82333;
+        }
+
+        .btn-zero {
+            grid-column: span 2;
+        }
+
+        .expression-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .expression-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .calculate-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+        }
+
+        .history-title {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .history-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .history-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .history-item:hover {
+            transform: translateX(5px);
+        }
+
+        .history-expression {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .history-result {
+            color: #667eea;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .history-time {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .clear-history-btn {
+            width: 100%;
+            padding: 12px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-history-btn:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 1rem;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .success {
+            color: #28a745;
+            font-size: 1rem;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Responsividade para mobile */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 10px;
+            }
+
+            .calculator-section {
+                padding: 20px;
+            }
+
+            .history-section {
+                border-left: none;
+                border-top: 1px solid rgba(102, 126, 234, 0.2);
+                max-height: 300px;
+                overflow-y: auto;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+
+            .display {
+                font-size: 1.5rem;
+                min-height: 60px;
+                padding: 15px;
+            }
+
+            .btn {
+                padding: 15px;
+                font-size: 1rem;
+                min-height: 50px;
+            }
+
+            .buttons {
+                gap: 10px;
+            }
+
+            .history-list {
+                max-height: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                margin: 0;
+                border-radius: 15px;
+            }
+
+            .calculator-section {
+                padding: 15px;
+            }
+
+            .history-section {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .display {
+                font-size: 1.3rem;
+                padding: 12px;
+            }
+
+            .btn {
+                padding: 12px;
+                font-size: 0.9rem;
+                min-height: 45px;
+            }
+        }
+
+        /* Scrollbar personalizada */
+        .history-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .history-list::-webkit-scrollbar-track {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 3px;
+        }
+
+        .history-list::-webkit-scrollbar-thumb {
+            background: rgba(102, 126, 234, 0.5);
+            border-radius: 3px;
+        }
+
+        .history-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(102, 126, 234, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator-section">
+            <h1>Calculadora</h1>
+            
+            <div class="display" id="display">0</div>
+            
+            <div class="buttons">
+                <button class="btn btn-clear" onclick="clearDisplay()">C</button>
+                <button class="btn btn-operator" onclick="appendToDisplay('/')">/</button>
+                <button class="btn btn-operator" onclick="appendToDisplay('*')">×</button>
+                <button class="btn btn-operator" onclick="deleteLast()">⌫</button>
+                
+                <button class="btn btn-number" onclick="appendToDisplay('7')">7</button>
+                <button class="btn btn-number" onclick="appendToDisplay('8')">8</button>
+                <button class="btn btn-number" onclick="appendToDisplay('9')">9</button>
+                <button class="btn btn-operator" onclick="appendToDisplay('-')">-</button>
+                
+                <button class="btn btn-number" onclick="appendToDisplay('4')">4</button>
+                <button class="btn btn-number" onclick="appendToDisplay('5')">5</button>
+                <button class="btn btn-number" onclick="appendToDisplay('6')">6</button>
+                <button class="btn btn-operator" onclick="appendToDisplay('+')">+</button>
+                
+                <button class="btn btn-number" onclick="appendToDisplay('1')">1</button>
+                <button class="btn btn-number" onclick="appendToDisplay('2')">2</button>
+                <button class="btn btn-number" onclick="appendToDisplay('3')">3</button>
+                <button class="btn btn-equals" onclick="calculate()" rowspan="2">=</button>
+                
+                <button class="btn btn-number btn-zero" onclick="appendToDisplay('0')">0</button>
+                <button class="btn btn-number" onclick="appendToDisplay('.')">.</button>
+            </div>
+
+            <input type="text" class="expression-input" id="expressionInput" placeholder="Digite uma expressão (ex: 2+3*4)">
+            <button class="calculate-btn" onclick="calculateExpression()">Calcular Expressão</button>
+            
+            <div id="message"></div>
+        </div>
+
+        <div class="history-section">
+            <h2 class="history-title">Histórico</h2>
+            <div class="history-list" id="historyList">
+                <!-- Histórico será carregado aqui -->
+            </div>
+            <button class="clear-history-btn" onclick="clearHistory()">Limpar Histórico</button>
+        </div>
+    </div>
+
+    <script>
+        let currentDisplay = '0';
+        let shouldResetDisplay = false;
+
+        function updateDisplay() {
+            document.getElementById('display').textContent = currentDisplay;
+        }
+
+        function appendToDisplay(value) {
+            if (shouldResetDisplay) {
+                currentDisplay = '';
+                shouldResetDisplay = false;
+            }
+            
+            if (currentDisplay === '0' && value !== '.') {
+                currentDisplay = value;
+            } else {
+                currentDisplay += value;
+            }
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentDisplay = '0';
+            shouldResetDisplay = false;
+            updateDisplay();
+            clearMessage();
+        }
+
+        function deleteLast() {
+            if (currentDisplay.length > 1) {
+                currentDisplay = currentDisplay.slice(0, -1);
+            } else {
+                currentDisplay = '0';
+            }
+            updateDisplay();
+        }
+
+        function calculate() {
+            calculateExpression(currentDisplay);
+        }
+
+        function calculateExpression(expression = null) {
+            const expr = expression || document.getElementById('expressionInput').value || currentDisplay;
+            
+            if (!expr || expr === '0') {
+                showMessage('Digite uma expressão válida', 'error');
+                return;
+            }
+
+            fetch('/api/calculate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ expression: expr })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    showMessage(data.error, 'error');
+                } else {
+                    currentDisplay = data.result.toString();
+                    shouldResetDisplay = true;
+                    updateDisplay();
+                    document.getElementById('expressionInput').value = '';
+                    showMessage(`${data.expression} = ${data.result}`, 'success');
+                    loadHistory();
+                }
+            })
+            .catch(error => {
+                showMessage('Erro ao calcular', 'error');
+                console.error('Error:', error);
+            });
+        }
+
+        function loadHistory() {
+            fetch('/api/history')
+            .then(response => response.json())
+            .then(data => {
+                const historyList = document.getElementById('historyList');
+                historyList.innerHTML = '';
+                
+                if (data.length === 0) {
+                    historyList.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">Nenhuma operação no histórico</div>';
+                    return;
+                }
+                
+                data.forEach(operation => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    historyItem.innerHTML = `
+                        <div class="history-expression">${operation.expression}</div>
+                        <div class="history-result">= ${operation.result}</div>
+                        <div class="history-time">${formatDate(operation.timestamp)}</div>
+                    `;
+                    historyItem.onclick = () => {
+                        currentDisplay = operation.result.toString();
+                        shouldResetDisplay = true;
+                        updateDisplay();
+                    };
+                    historyList.appendChild(historyItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading history:', error);
+            });
+        }
+
+        function clearHistory() {
+            if (confirm('Tem certeza que deseja limpar todo o histórico?')) {
+                fetch('/api/clear', {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        showMessage(data.error, 'error');
+                    } else {
+                        showMessage('Histórico limpo com sucesso', 'success');
+                        loadHistory();
+                    }
+                })
+                .catch(error => {
+                    showMessage('Erro ao limpar histórico', 'error');
+                    console.error('Error:', error);
+                });
+            }
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.className = type;
+            
+            setTimeout(() => {
+                clearMessage();
+            }, 3000);
+        }
+
+        function clearMessage() {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = '';
+            messageDiv.className = '';
+        }
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Suporte a teclado
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            
+            if (key >= '0' && key <= '9') {
+                appendToDisplay(key);
+            } else if (key === '.') {
+                appendToDisplay('.');
+            } else if (key === '+') {
+                appendToDisplay('+');
+            } else if (key === '-') {
+                appendToDisplay('-');
+            } else if (key === '*') {
+                appendToDisplay('*');
+            } else if (key === '/') {
+                event.preventDefault();
+                appendToDisplay('/');
+            } else if (key === 'Enter' || key === '=') {
+                event.preventDefault();
+                calculate();
+            } else if (key === 'Escape' || key === 'c' || key === 'C') {
+                clearDisplay();
+            } else if (key === 'Backspace') {
+                deleteLast();
+            }
+        });
+
+        // Suporte a Enter no campo de expressão
+        document.getElementById('expressionInput').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                calculateExpression();
+            }
+        });
+
+        // Carrega o histórico ao inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHistory();
+        });
+    </script>
+</body>
+</html>
