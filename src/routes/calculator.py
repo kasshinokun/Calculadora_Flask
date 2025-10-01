@@ -11,6 +11,12 @@ def safe_eval(expression):
     Avalia uma expressão matemática de forma segura
     Permite apenas operações básicas: +, -, *, /, (, ), números e decimais
     """
+    # Substitui x por *  
+    expression = expression.replace('x', '*')
+    
+    # Substitui : por /  
+    expression = expression.replace(':', '/')
+    
     # Remove espaços
     expression = expression.replace(' ', '')
     

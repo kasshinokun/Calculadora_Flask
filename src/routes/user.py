@@ -1,39 +1,33 @@
-from flask import Blueprint, jsonify, request
-from src.models.user import User, db
+from flask import Blueprint, request, jsonify
+from src.models.user import db, User
 
-user_bp = Blueprint('user', __name__)
+user_bp = Blueprint("user", __name__)
 
-@user_bp.route('/users', methods=['GET'])
+@user_bp.route("/users", methods=["GET"])
 def get_users():
-    users = User.query.all()
-    return jsonify([user.to_dict() for user in users])
+    """
+    Retorna todos os usuários
+    """
+    try:
+        users = User.query.all()
+        return jsonify([{"id": user.id, "username": user.username, "email": user.email} for user in users])
+    except Exception as e:
+        return jsonify({"error": "Erro ao buscar usuários"}), 500
 
-@user_bp.route('/users', methods=['POST'])
+@user_bp.route("/users", methods=["POST"])
 def create_user():
-    
-    data = request.json
-    user = User(username=data['username'], email=data['email'])
-    db.session.add(user)
-    db.session.commit()
-    return jsonify(user.to_dict()), 201
-
-@user_bp.route('/users/<int:user_id>', methods=['GET'])
-def get_user(user_id):
-    user = User.query.get_or_404(user_id)
-    return jsonify(user.to_dict())
-
-@user_bp.route('/users/<int:user_id>', methods=['PUT'])
-def update_user(user_id):
-    user = User.query.get_or_404(user_id)
-    data = request.json
-    user.username = data.get('username', user.username)
-    user.email = data.get('email', user.email)
-    db.session.commit()
-    return jsonify(user.to_dict())
-
-@user_bp.route('/users/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    user = User.query.get_or_404(user_id)
-    db.session.delete(user)
-    db.session.commit()
-    return '', 204
+    """
+    Cria um novo usuário
+    """
+    try:
+        data = request.get_json()
+        if not data or "username" not in data or "email" not in data:
+            return jsonify({"error": "Username e email são obrigatórios"}), 400
+        
+        user = User(username=data["username"], email=data["email"])
+        db.session.add(user)
+        db.session.commit()
+        
+        return jsonify({"id": user.id, "username": user.username, "email": user.email}), 201
+    except Exception as e:
+        return jsonify({"error": "Erro ao criar usuário"}), 500
