@@ -13,8 +13,8 @@ Uma aplicação web de calculadora simples e responsiva construída com Flask, q
 
 ## Requisitos
 
-- Python 3.11 ou superior
-- pip3
+- Python 3.13, adeque se usar Python 3.11
+- pip ou pip3
 
 ## Instalação
 
@@ -22,20 +22,29 @@ Uma aplicação web de calculadora simples e responsiva construída com Flask, q
 2. Navegue até a pasta do projeto:
    ```bash
    cd app
+   ```<br>```
+   cd app
    ```
 
 3. Instale as dependências:
    ```bash
    pip3 install -r requirements.txt
+   ```ou<br>```
+   pip install -r requirements.txt
    ```
+
+   
 
 ## Execução
 
 Para iniciar a aplicação, execute:
 
 ```bash
-python3.11 main.py
+python3 main.py
+```<br>```
+python main.py
 ```
+
 
 A aplicação estará disponível em `http://localhost:5000`
 
@@ -47,8 +56,8 @@ A aplicação estará disponível em `http://localhost:5000`
 - **Operadores**: Use +, -, ×, / para operações matemáticas
 - **Ponto decimal**: Clique no botão "." para inserir decimais
 - **Igual (=)**: Calcula o resultado da expressão
-- **Limpar (C)**: Limpa o display
-- **Apagar (⌫)**: Remove o último caractere
+- **Limpar (Limpar Tudo)**: Limpa o display
+- **Apagar (Limpar)**: Remove o último caractere
 
 ### Campo de Expressão
 
@@ -56,8 +65,11 @@ Você também pode digitar expressões matemáticas diretamente no campo de entr
 
 Exemplos:
 - `2+3*4` = 14
+- `2+3x4` = 14
 - `(10+5)/3` = 5
+- `(10+5):3` = 5
 - `15.50*2` = 31
+- `15,50x2` = 31
 
 ### Histórico
 
@@ -68,10 +80,10 @@ Exemplos:
 ### Atalhos de Teclado
 
 - **Números (0-9)**: Inserir números
-- **Operadores (+, -, *, /)**: Inserir operadores
+- **Operadores (+, -, *, x, /, :)**: Inserir operadores
 - **Enter ou =**: Calcular resultado
-- **Escape ou C**: Limpar display
-- **Backspace**: Apagar último caractere
+- **Escape ou C**: Limpar display(em adaptação)
+- **Backspace**: Apagar último caractere(em adaptação)
 
 ## Estrutura do Projeto
 
