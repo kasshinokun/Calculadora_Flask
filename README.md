@@ -24,26 +24,32 @@ Uma aplicação web de calculadora simples e responsiva construída com Flask, q
 2. Navegue até a pasta do projeto:
    ```bash
    cd app
-   ```<br>```
+   ```
+
+   ```
    cd app
    ```
 
-3. Instale as dependências:
+4. Instale as dependências:
    ```bash
    pip3 install -r requirements.txt
-   ```ou<br>```
-   pip install -r requirements.txt
    ```
 
-   
-
+   ```
+   pip install -r requirements.txt
+   ```
+## Layout Inicial
+<img src="https://github.com/kasshinokun/Calculadora_Flask/blob/main/images/Calculadora_Flask_Landscape-1.png" width="800" height="500" alt="Aplicação em Landscape">
+<img src="https://github.com/kasshinokun/Calculadora_Flask/blob/main/images/Calculadora_Flask_Portrait-1.png " width="500" height="800" alt="Aplicação em Landscape">
 ## Execução
 
 Para iniciar a aplicação, execute:
 
 ```bash
 python3 main.py
-```<br>```
+```
+
+```
 python main.py
 ```
 
