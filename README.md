@@ -23,16 +23,23 @@ Uma aplicação web de calculadora simples e responsiva construída com Flask, q
 
 ## Instalação
 
-1. Descompacte o arquivo zip
-2. Navegue até a pasta do projeto:
+1. Baixe a pasta do projeto:
+   - no Windows:
    ```bash
-   cd app
+   git clone https://github.com/kasshinokun/Calculadora_Flask.git
    ```
 
+   - no Linux:
    ```
-   cd app
+   git clone https://github.com/kasshinokun/Calculadora_Flask.git
+   ```
+   
+   ```
+   sudo git clone https://github.com/kasshinokun/Calculadora_Flask.git
    ```
 
+3. Descompacte o arquivo zip
+   - Talvez seja preciso criar um virtual env(venv) para usar o Python em alguns SO(ex.: ArchLinux e simalares/forks)
 4. Instale as dependências:
    ```bash
    pip3 install -r requirements.txt
@@ -41,9 +48,6 @@ Uma aplicação web de calculadora simples e responsiva construída com Flask, q
    ```
    pip install -r requirements.txt
    ```
-## Layout Inicial
-<img src="https://github.com/kasshinokun/Calculadora_Flask/blob/main/images/Calculadora_Flask_Landscape-1.png" width="800" height="500" alt="Aplicação em Landscape">
-<img src="https://github.com/kasshinokun/Calculadora_Flask/blob/main/images/Calculadora_Flask_Portrait-1.png " width="500" height="800" alt="Aplicação em Landscape">
 ## Execução
 
 Para iniciar a aplicação, execute:
@@ -60,6 +64,11 @@ python main.py
 A aplicação estará disponível em `http://localhost:5000`
 
 ## Uso
+
+### Layout Inicial
+<img src="https://github.com/kasshinokun/Calculadora_Flask/blob/main/images/Calculadora_Flask_Landscape-1.png" width="800" height="500" alt="Aplicação em Landscape">
+<img src="https://github.com/kasshinokun/Calculadora_Flask/blob/main/images/Calculadora_Flask_Portrait-1.png " width="500" height="800" alt="Aplicação em Landscape">
+
 
 ### Interface da Calculadora
 
