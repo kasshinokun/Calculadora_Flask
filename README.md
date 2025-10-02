@@ -1,5 +1,7 @@
 # Calculadora Flask
 
+revisão 2.01-10-2025
+
 Uma aplicação web de calculadora simples e responsiva construída com Flask, que permite realizar operações matemáticas com valores de até 2 casas decimais e mantém um histórico das últimas 10 operações.
 
 ## Características
