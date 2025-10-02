@@ -1,6 +1,6 @@
 # Calculadora Flask
 
-revisão 2.01-10-2025
+revisão 2.02-10-2025
 
 Uma aplicação web de calculadora simples e responsiva construída com Flask, que permite realizar operações matemáticas com valores de até 2 casas decimais e mantém um histórico das últimas 10 operações.
 
@@ -10,6 +10,8 @@ Uma aplicação web de calculadora simples e responsiva construída com Flask, q
 - **Operações matemáticas**: Suporta adição, subtração, multiplicação, divisão e parênteses
 - **Precisão decimal**: Trabalha com valores de até 2 casas decimais
 - **Histórico**: Mantém as últimas 10 operações realizadas
+  - na versão 2.02-10-2025, uso de sessão(cache do navegador) para guardar, visando segurança de dados;
+  - na versão 1.01-10-2025, uso de SQLite para guardar.
 - **Limpar memória**: Permite limpar todo o histórico de operações
 - **Layout responsivo**: Funciona perfeitamente em desktop (widescreen) e mobile (portrait)
 - **Interface intuitiva**: Design moderno e fácil de usar
@@ -98,22 +100,22 @@ Exemplos:
 
 ```
 app/
-├── main.py                 # Arquivo principal da aplicação
+├── main.py                 # Arquivo principal da aplicação(atualizado) 
 ├── requirements.txt        # Dependências do projeto
 ├── README.md              # Este arquivo
 ├── src/
 │   ├── models/
 │   │   ├── __init__.py
 │   │   ├── user.py        # Modelo de usuário e configuração do banco
-│   │   └── calculator.py  # Modelo de operação
+│   │   └── calculator.py  # Modelo de operação(desativado)
 │   └── routes/
 │       ├── __init__.py
 │       ├── user.py        # Rotas de usuário
-│       └── calculator.py  # Rotas da calculadora
+│       └── calculator.py  # Rotas da calculadora(atualizado)
 ├── static/
 │   └── index.html         # Interface da aplicação
 └── database/
-    └── app.db             # Banco de dados SQLite (criado automaticamente)
+    └── app.db             # Banco de dados SQLite(desativado) (criado automaticamente)
 ```
 
 ## API Endpoints
@@ -165,7 +167,7 @@ Limpa todo o histórico de operações.
 ## Tecnologias Utilizadas
 
 - **Backend**: Flask 3.1.2
-- **Banco de Dados**: SQLite com Flask-SQLAlchemy
+- **Banco de Dados**: SQLite com Flask-SQLAlchemy(até a versão 1.02-10-2025)
 - **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
 - **Design**: Responsivo com CSS Grid e Media Queries
 
